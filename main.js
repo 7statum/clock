@@ -55,6 +55,13 @@ function checker(hours, minutes) {
     if (document.getElementById('checkbox').checked == true) {
         var AmOrPm = hours >= 12 ? 'pm' : 'am';
         hours = (hours % 12) || 12;
+        if (AmOrPm == 'am') {
+            // console.log('am')
+            document.getElementById('body').setAttribute('style', "background-color: rgb(50, 50, 50)");
+        } else {
+            // console.log('pm')
+            document.getElementById('body').setAttribute('style', "background-color: rgb(30, 30, 30)");
+        }
         var finalTime = day + "/" + month + "/" + year + " | " + hours + ":" + minutes + " " + AmOrPm;
         console.log(finalTime);
     } else {
