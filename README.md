@@ -3,7 +3,8 @@
 
 ## AM/PM 12
 
-![alt text](https://github.com/7statum/clock/blob/master/img/am_pm.png)
+![alt text](https://github.com/7statum/clock/blob/master/img/am.png)
+![alt text](https://github.com/7statum/clock/blob/master/img/pm.png)
 
 ## 24
 
