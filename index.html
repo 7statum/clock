@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,23 +10,27 @@
     <link rel="stylesheet" href="style.css">
     <title>Clock</title>
 </head>
+
 <body id="body">
     <div id='top'>
     </div>
-    <label class="switch">
-        <input id="checkbox" type="checkbox" onclick="checker()">
-        <span class="slider"></span>
-      </label>
-    <div id="clock"></div>
-    <nav id="nav">
-        <ul class="menu">
-            <li class="menu-item">
-                <p id='head_title'>Timezone</p>
-                <ul class="submenu" id="timezone">
-                </ul>
-            </li>
-        </ul>
-    </nav>
+    <div class="row">
+        <label class="switch">
+            <input id="checkbox" type="checkbox" onclick="checker()">
+            <span class="slider"></span>
+        </label>
+        <div id="clock"></div>
+        <nav id="nav">
+            <ul class="menu">
+                <li class="menu-item">
+                    <p id='head_title'>Timezone</p>
+                    <ul class="submenu" id="timezone">
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </div>
 </body>
 <script src="main.js"></script>
+
 </html>

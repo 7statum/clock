@@ -92,7 +92,8 @@ xhr.onreadystatechange = function () {
     }
 }
 
-nav.addEventListener('click', function (e) {
+form.addEventListener('click', function (e) {
+    close();
     var target = e.target;
 
     var targetParent = target.closest('.menu-item');
