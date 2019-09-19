@@ -15,7 +15,6 @@ function ready() {
 form.onclick = function (event) {
     if (event.target.getAttribute('value') == null) {
         console.log('menu')
-        
     } else {
         var url = api + '/' + event.target.getAttribute('value') + '.json';
         var xhr_api = new XMLHttpRequest();
@@ -33,11 +32,8 @@ form.onclick = function (event) {
                 close();
             }
         }
-
     }
-
 }
-
 
 function checker(hours, minutes) {
     var dt = new Date();
@@ -85,8 +81,6 @@ xhr.onreadystatechange = function () {
             node_a.appendChild(textnode);
             node.appendChild(node_a);
             document.getElementById("timezone").appendChild(node);
-
-
         }
     }
 }
@@ -102,7 +96,6 @@ nav.addEventListener('click', function (e) {
             subm.style.display = 'block';
         }
     }
-
 });
 
 function close() {
