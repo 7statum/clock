@@ -2,43 +2,73 @@ var api = 'http://worldtimeapi.org/api/timezone';
 var xhr = new XMLHttpRequest()
 var form = document.getElementById('nav');
 var t_dict = [];
-var dict_time = {};
-var t = false;
+var get_time = {};
+var dt = new Date();
+var count = 0
+
+var period = 30000;
+
+monthA = '0,1,2,3,4,5,6,7,8,сентября,октября,11,12'.split(',');
 
 function ready() {
     console.log('DOM ready');
     xhr.open('GET', api, true);
     xhr.send();
     checker();
+
+}
+
+function httpGet(url) {
+    return new Promise(function (resolve, reject) {
+        var xhr_api = new XMLHttpRequest();
+        xhr_api.open('GET', url, true);
+        xhr_api.onload = function () {
+            if (this.status == 200) {
+                resolve(this.response);
+                get_time = JSON.parse(this.response);
+                document.getElementById("head_title").innerText = get_time.timezone;
+                checker();
+            } else {
+                
+                var error = new Error(this.statusText);
+                error.code = this.status;
+                reject(error);
+                checker();
+            }
+        };
+        xhr_api.onerror = function () {
+            reject(new Error("Network Error"));
+        };
+        xhr_api.send();
+    });
 }
 
 form.onclick = function (event) {
-    if (event.target.getAttribute('value') == null) {
-        console.log('menu')
-    } else {
-        var url = api + '/' + event.target.getAttribute('value') + '.json';
-        var xhr_api = new XMLHttpRequest();
-        xhr_api.open('GET', url, true);
-        xhr_api.send();
-        xhr_api.onreadystatechange = function () {
-            if (xhr_api.readyState != 4) return;
-            if (xhr_api.status != 200) {
-                console.log(xhr_api.status + ': ' + xhr_api.statusText);
-            } else {
-                console.log(xhr_api.status + ': <' + xhr_api.statusText + '> ' + event.target.getAttribute('value'));
-                dict_time = JSON.parse(xhr_api.responseText)
-                document.getElementById("head_title").innerText = event.target.getAttribute('value');
-                checker();
-                close();
-            }
+    try{
+        clearInterval(interval);
+    } catch (e){
+        if (e instanceof ReferenceError) {
+            // console.log('not found interval')
         }
+    }
+    if (event.target.getAttribute('value') == null) {
+        // console.log('click to menu')
+    } else {
+
+        var url = api + '/' + event.target.getAttribute('value') + '.json';
+        httpGet(url);
+
+        
+        interval = setInterval(()=>{
+            console.log('interval count: ', count++)
+            httpGet(url);
+        }, period);
     }
 }
 
 function checker(hours, minutes) {
-    var dt = new Date();
-    monthA = '0,1,2,3,4,5,6,7,8,сентября,октября,11,12'.split(',');
-    if (dict_time.datetime == null) {
+
+    if (get_time.datetime == null) {
         var minutes = dt.getMinutes();
         var hours = dt.getHours();
         var day = dt.getDate();
@@ -46,27 +76,25 @@ function checker(hours, minutes) {
         var year = dt.getFullYear();
     }
     else {
-        var year = dict_time.datetime.slice(0, 4);
-        var month = monthA[parseInt(dict_time.datetime.slice(5, 7))];
-        var day = dict_time.datetime.slice(8, 10);
-        var hours = dict_time.datetime.slice(11, 13);
-        var minutes = dict_time.datetime.slice(14, 16);
+        var year = get_time.datetime.slice(0, 4);
+        var month = monthA[parseInt(get_time.datetime.slice(5, 7))];
+        var day = get_time.datetime.slice(8, 10);
+        var hours = get_time.datetime.slice(11, 13);
+        var minutes = get_time.datetime.slice(14, 16);
     }
     if (document.getElementById('checkbox').checked == true) {
         var AmOrPm = hours >= 12 ? 'pm' : 'am';
         hours = (hours % 12) || 12;
         if (AmOrPm == 'am') {
-            // console.log('am')
             document.getElementById('body').setAttribute('style', "background-color: rgb(50, 50, 50)");
         } else {
-            // console.log('pm')
             document.getElementById('body').setAttribute('style', "background-color: rgb(30, 30, 30)");
         }
         var finalTime = day + "/" + month + "/" + year + " | " + hours + ":" + minutes + " " + AmOrPm;
-        console.log(finalTime);
+        // console.log(finalTime);
     } else {
         var finalTime = day + " / " + month + " / " + year + " | " + hours + ":" + minutes;
-        console.log(finalTime)
+        // console.log(finalTime);
     }
     document.getElementById('clock').innerHTML = finalTime.toString().toUpperCase();
 }
@@ -78,7 +106,7 @@ xhr.onreadystatechange = function () {
     } else {
         t_dict = JSON.parse(xhr.responseText);
         for (i in t_dict) {
-            // menu
+            // generate menu
             var node = document.createElement("LI");
             var node_a = document.createElement("A");
             node.classList.add("submenu-item");
