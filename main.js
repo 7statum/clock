@@ -1,21 +1,19 @@
 var api = 'http://worldtimeapi.org/api/timezone';
-var xhr = new XMLHttpRequest()
-var form = document.getElementById('nav');
-var t_dict = [];
+var monthA = '0,1,2,3,4,5,6,7,8,сентября,октября,11,12'.split(',');
 var get_time = {};
+var t_dict = [];
+var count = 1;
+var form = document.getElementById('nav');
+var xhr = new XMLHttpRequest();
 var dt = new Date();
-var count = 0
 
 var period = 30000;
-
-monthA = '0,1,2,3,4,5,6,7,8,сентября,октября,11,12'.split(',');
 
 function ready() {
     console.log('DOM ready');
     xhr.open('GET', api, true);
     xhr.send();
     checker();
-
 }
 
 function httpGet(url) {
@@ -29,7 +27,7 @@ function httpGet(url) {
                 document.getElementById("head_title").innerText = get_time.timezone;
                 checker();
             } else {
-                
+
                 var error = new Error(this.statusText);
                 error.code = this.status;
                 reject(error);
@@ -44,9 +42,9 @@ function httpGet(url) {
 }
 
 form.onclick = function (event) {
-    try{
+    try {
         clearInterval(interval);
-    } catch (e){
+    } catch (e) {
         if (e instanceof ReferenceError) {
             // console.log('not found interval')
         }
@@ -58,8 +56,8 @@ form.onclick = function (event) {
         var url = api + '/' + event.target.getAttribute('value') + '.json';
         httpGet(url);
 
-        
-        interval = setInterval(()=>{
+
+        interval = setInterval(() => {
             console.log('interval count: ', count++)
             httpGet(url);
         }, period);
