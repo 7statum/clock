@@ -97,6 +97,7 @@ function checker(hours, minutes) {
         // console.log(finalTime);
     }
     document.getElementById('clock').innerHTML = finalTime.toString().toUpperCase();
+    close();
 }
 
 xhr.onreadystatechange = function () {
@@ -121,7 +122,6 @@ xhr.onreadystatechange = function () {
 }
 
 form.addEventListener('click', function (e) {
-    close();
     var target = e.target;
 
     var targetParent = target.closest('.menu-item');
